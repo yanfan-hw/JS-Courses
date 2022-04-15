@@ -10,7 +10,20 @@ const BOARDGAME_STYLE = {
 Object.assign(boardGame.style, BOARDGAME_STYLE)
 document.body.appendChild(boardGame)
 
-const arrCards = []
+const BASE_URL =
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white";
+const pokemonImg = [
+    { id: "poke-0", image: `${BASE_URL}/1.png` },
+    { id: "poke-1", image: `${BASE_URL}/2.png` },
+    { id: "poke-2", image: `${BASE_URL}/3.png` },
+    { id: "poke-3", image: `${BASE_URL}/4.png` },
+    { id: "poke-5", image: `${BASE_URL}/5.png` },
+    { id: "poke-4", image: `${BASE_URL}/6.png` },
+    { id: "poke-6", image: `${BASE_URL}/7.png` },
+    { id: "poke-7", image: `${BASE_URL}/8.png` },
+    { id: "poke-8", image: `${BASE_URL}/9.png` },
+    { id: "poke-9", image: `${BASE_URL}/10.png` }
+]
 
 const CARD_STYLE = {
     position: 'absolute',
