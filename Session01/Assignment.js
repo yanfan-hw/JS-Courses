@@ -4,23 +4,23 @@ const fortmatMoney = (money) => {
     money = moneyFormat.format(money)
     return money
 }
-console.log(fortmatMoney(1000.0011))
+// console.log(fortmatMoney(1000.0011))
 
 // * 02
-const formatWallet= (money, param) => {
+const formatWallet = (money, param) => {
     let Symbols = ''
     if (money >= 1000000000) {
-            money /= 1000000000
-            Symbols = 'B'
-    } 
+        money /= 1000000000
+        Symbols = 'B'
+    }
     if (money >= 1000000) {
-            money /= 1000000
-            Symbols = 'M'
-    } 
+        money /= 1000000
+        Symbols = 'M'
+    }
     if (money >= 1000) {
-            money /= 1000
-            Symbols = 'K'
-    } 
+        money /= 1000
+        Symbols = 'K'
+    }
     return money.toFixed(param).concat(Symbols)
 }
 // console.log("Money ", formatWallet(1120,2));
@@ -65,7 +65,6 @@ const findMissingElements = (arr1, arr2) => {
 // console.log(findMissingElements([1,2,3], [1,3,5,7,9]))
 
 // * 07
-
 const cashOut = (money) => {
     // * money = 50*x1 + 20*x2 + 10*x3 + 1*x4
     let x1 = Math.floor(money / 50)
