@@ -4,23 +4,23 @@ const fortmatMoney = (money) => {
     money = moneyFormat.format(money)
     return money
 }
-console.log(fortmatMoney(1000.0011))
+// console.log(fortmatMoney(1000.0011))
 
 // * 02
-const formatWallet= (money, param) => {
+const formatWallet = (money, param) => {
     let Symbols = ''
     if (money >= 1000000000) {
-            money /= 1000000000
-            Symbols = 'B'
-    } 
+        money /= 1000000000
+        Symbols = 'B'
+    }
     if (money >= 1000000) {
-            money /= 1000000
-            Symbols = 'M'
-    } 
+        money /= 1000000
+        Symbols = 'M'
+    }
     if (money >= 1000) {
-            money /= 1000
-            Symbols = 'K'
-    } 
+        money /= 1000
+        Symbols = 'K'
+    }
     return money.toFixed(param).concat(Symbols)
 }
 // console.log("Money ", formatWallet(1120,2));
@@ -65,7 +65,6 @@ const findMissingElements = (arr1, arr2) => {
 // console.log(findMissingElements([1,2,3], [1,3,5,7,9]))
 
 // * 07
-
 const cashOut = (money) => {
     // * money = 50*x1 + 20*x2 + 10*x3 + 1*x4
     let x1 = Math.floor(money / 50)
@@ -108,120 +107,40 @@ const convertToRomanNumber = (number) => {
 
 // * 09
 const readNumber = (number) => {
-    const chuSo = new Array (' không ', ' một ', ' hai ', ' ba ', ' bốn ', ' năm ', ' sáu ', ' bảy ', ' tám ', ' chín ')
-    const docSo = new Array ('', ' nghìn', ' triệu', 'tỷ', ' nghìn tỷ', ' triệu tỷ')
+    let numberToString = number.toString()
+    let needZeroCount = numberToString.length % 3
+    if (needZeroCount != 0)
+        needZeroCount = 3 - needZeroCount
 
-    const docBaChuSo = (baSo) => {
-        let soHangTram, soHangChuc, soDonVi
-        let ketQua = ''
-        soHangTram = parseInt(baSo / 100)
-        soHangChuc = parseInt((baSo % 100) / 10)
-        soDonVi = baSo % 10
+    numberToString = '0'.repeat(needZeroCount) + numberToString
 
-        if (soHangTram == 0 && soHangChuc == 0 && soDonVi == 0) return '' // * 000
+    const units = ['', 'nghìn', 'vạn']
+    const digits = ['không', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín']
 
-        // * x00 || x0y
-        if (soHangTram != 0) {
-            ketQua += chuSo[soHangTram] + ' trăm '
-            if ((soHangChuc == 0) && (soDonVi != 0)) ketQua += ' linh '
-        }
+    const readThree = (a, b, c) => {
+        return [a, b, c]
+    }
 
-        // * xyz || x0y
-        if ((soHangChuc != 0) && (soHangChuc != 1)) {
-            ketQua += chuSo[soHangChuc] + " mươi";
-            if ((soHangChuc == 0) && (soDonVi != 0)) ketQua = ketQua + ' linh '
-        }
+    const output = []
 
-        // * x1y
-        if (soHangChuc == 1) ketQua += " mười "
+    for (let i = 0; i < numberToString.length / 3; i++) {
+        let [a, b, c] = numberToString.substr(i * 3, 3)
+        output.push(...readThree(a, b, c))
+        output.push(units[numberToString.length / 3 - 1 - i])
+    }
+    const readTwo = (b, c) => {
+        const output = []
 
-        switch (soDonVi) {
-            case 1:
-                if ((soHangChuc != 0) && (soHangChuc != 1)) {
-                    ketQua += " mốt ";
-                }
-                else {
-                    ketQua += chuSo[soDonVi]
-                }
-                break;
-            case 5:
-                if (soHangChuc == 0) {
-                    ketQua += chuSo[soDonVi]
-                }
-                else {
-                    ketQua += " lăm "
-                }
-                break;
-            default:
-                if (soDonVi != 0) {
-                    ketQua += chuSo[soDonVi];
-                }
+        switch(b) {
+            case 0:
+                output.push(digits[c])
                 break
+            
+            case 1:
+                
         }
-        return ketQua
     }
 
-    let lan, i = 0
-    let ketQua, temp = ''
-    let viTri = []
-
-    if (number < 0) return ''
-    if (number == 0) return 0
-
-    if (number > 10 ** 6) return 'Số quá lớn'
-
-    viTri[5] = Math.floor(number / 1000000000000000);
-    if (isNaN(viTri[5]))
-        viTri[5] = "0";
-    number = number - parseFloat(viTri[5].toString()) * 1000000000000000;
-    viTri[4] = Math.floor(number / 1000000000000);
-    if (isNaN(viTri[4]))
-        viTri[4] = "0";
-    number = number - parseFloat(viTri[4].toString()) * 1000000000000;
-    viTri[3] = Math.floor(number / 1000000000);
-    if (isNaN(viTri[3]))
-        viTri[3] = "0";
-    number = number - parseFloat(viTri[3].toString()) * 1000000000;
-    viTri[2] = parseInt(number / 1000000);
-    if (isNaN(viTri[2]))
-        viTri[2] = "0";
-    viTri[1] = parseInt((number % 1000000) / 1000);
-    if (isNaN(viTri[1]))
-        viTri[1] = "0";
-    viTri[0] = parseInt(number % 1000);
-    if (isNaN(viTri[0]))
-        viTri[0] = "0";
-    if (viTri[5] > 0) {
-        lan = 5;
-    }
-    else if (viTri[4] > 0) {
-        lan = 4;
-    }
-    else if (viTri[3] > 0) {
-        lan = 3;
-    }
-    else if (viTri[2] > 0) {
-        lan = 2;
-    }
-    else if (viTri[1] > 0) {
-        lan = 1;
-    }
-    else {
-        lan = 0;
-    }
-    
-    for (i = lan; i >= 0; i--) {
-        temp = docBaChuSo(viTri[i]);
-        ketQua += temp;
-
-        if (viTri[i] > 0) ketQua += docSo[i];
-        if ((i > 0) && (temp.length > 0)) ketQua += '';
-    }
-    if (ketQua.substring(ketQua.length - 1) == ',') {
-        ketQua = ketQua.substring(0, ketQua.length - 1);
-    }
-    ketQua = ketQua.substring(1, 2).toUpperCase() + ketQua.substring(2);
-
-    return ketQua
+    return output.join(' ')
 }
-console.log(readNumber(700004))
+console.log(readNumber(708001))
