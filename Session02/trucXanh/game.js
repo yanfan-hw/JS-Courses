@@ -19,7 +19,7 @@ var selectedPokemonIndex = null
 var isDisabled
 var score = 100
 // * Senconds
-var timeNum = 10
+var timeNum = 100
 
 function createBoardGame() {
     const boardGame = document.createElement('div')
@@ -55,8 +55,8 @@ function createScore() {
     scoreGame.innerText = `Score: ${score}`
     const SCOREGAME_STYLE = {
         color: '#fff',
-        fontSize: '20px'
-
+        fontSize: '20px',
+        marginBottom: '10px'
     }
     Object.assign(scoreGame.style, SCOREGAME_STYLE)
     return scoreGame
@@ -68,14 +68,21 @@ function createTimeRemaining() {
     timeRemaining.innerText = `TimingRemaining: ${timeNum}s`
     const TIMEREMAINING_STYLE = {
         color: '#fff',
-        fontSize: '20px'
+        fontSize: '20px',
+        marginBottom: '10px'
     }
     Object.assign(timeRemaining.style, TIMEREMAINING_STYLE)
     return timeRemaining
 }
 
 function createBtnReplayGame() {
-
+    const btnReaplayGame = document.createElement('button')
+    btnReaplayGame.classList.add('play-game')
+    btnReaplayGame.innerText = 'RE-PLAY GAME'
+    btnReaplayGame.onclick = () => {
+        replayGame()
+    }
+    return btnReaplayGame
 }
 
 function createBtnPokemon(index) {
@@ -250,8 +257,10 @@ function createPokemons() {
     let gameControl = createGameControl()
     let score = createScore()
     let timeRemaining = createTimeRemaining()
+    let btnReaplayGame = createBtnReplayGame()
     gameControl.appendChild(score)
     gameControl.appendChild(timeRemaining)
+    gameControl.appendChild(btnReaplayGame)
 
     // * Create boardGame
     let boardGame = createBoardGame()
@@ -331,4 +340,6 @@ function gameOver() {
     return score
 }
 
-// gameStart()
+function replayGame() {
+    const boardGame = document.selec
+}
