@@ -68,7 +68,7 @@ function createScore() {
 function createTimeRemaining() {
     const timeRemaining = document.createElement('div')
     timeRemaining.id = 'coutdown-time'
-    timeRemaining.innerText = `TimingRemaining: ${timeNum}s`
+    timeRemaining.innerText = `Timing remaining: ${timeNum}s`
     const TIMEREMAINING_STYLE = {
         color: '#fff',
         fontSize: '20px',
@@ -344,10 +344,24 @@ function gameOver() {
 }
 
 function replayGame() {
-    isReplayGame = true
-    const boardGame = document.getElementById('board-game')
-    boardGame !== null ? boardGame.remove() : 0
-    const gameControl = document.getElementById('control-game')
-    gameControl.remove()
-    createPokemons()
+    setTimeout(() => {
+        isReplayGame = true
+        const boardGame = document.getElementById('board-game')
+        boardGame.remove()
+        const gameControl = document.getElementById('game-control')
+        gameControl.remove()
+
+        // * Reset var
+        resetVar()
+    }, 1000)
+
+    gameStart()
+}
+
+function resetVar() {
+    return pokemonsArr = [], selectedPokemonIndex = null, isDisabled = null, score = 100,
+        // * Senconds
+        timeNum = 100,
+        isReplayGame = null
+
 }
