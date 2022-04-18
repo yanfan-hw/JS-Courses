@@ -170,18 +170,32 @@ function onPokemonSelect(index) {
     }
 }
 
-function plusScorePlayer(bonusScore) {
+function animateScore(startScore, endScore) {
     const scoreGame = document.getElementById('score-game')
+    if (startScore === endScore) return
+    const range = endScore - startScore
+    let current = startScore
+    const increment = endScore > startScore ? 1 : -1
+    const stepTime = Math.abs(Math.floor(2000 / range))
+    let timeAnimateScore = setInterval(() => {
+        current += increment
+        scoreGame.innerText = `Score: ${current}`
+        if (current === endScore) {
+            clearInterval(timeAnimateScore)
+        }
+    }, stepTime)
+}
+
+function plusScorePlayer(bonusScore) {
+    animateScore(score, score + bonusScore)
     score += bonusScore
-    console.log('Matched!', score)
-    scoreGame.innerText = `Score: ${score}`
     return score
 }
 
 function minusScorePlayer(penaltyScore) {
-    const scoreGame = document.getElementById('score-game')
+
+    animateScore(score, score - penaltyScore)
     score -= penaltyScore
-    score === 0 ? scoreGame.innerText = 'Lose game!' : scoreGame.innerText = `Score: ${score}`
     return score
 }
 
