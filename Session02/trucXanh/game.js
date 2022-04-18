@@ -20,9 +20,11 @@ var isDisabled
 var score = 100
 // * Senconds
 var timeNum = 100
+var isReplayGame
 
 function createBoardGame() {
     const boardGame = document.createElement('div')
+    boardGame.id = 'board-game'
     const BOARDGAME_STYLE = {
         // background: 'radial-gradient(circle,#020024 0,#090979 35%,#00d4ff 100%)',
         position: 'relative',
@@ -39,6 +41,7 @@ function createBoardGame() {
 
 function createGameControl() {
     const gameControl = document.createElement('div')
+    gameControl.id = 'game-control'
     const GAMECONTROL_STYLE = {
         display: 'flex',
         flexDirection: 'column'
@@ -249,9 +252,9 @@ function createPokemons() {
         pokemonsArr.push(i)
     }
 
-    pokemonsArr = pokemonsArr.sort(() => {
-        return Math.random() - 0.5
-    })
+    // pokemonsArr = pokemonsArr.sort(() => {
+    //     return Math.random() - 0.5
+    // })
 
     // * Create GameControl
     let gameControl = createGameControl()
@@ -308,7 +311,7 @@ function gameStart() {
 }
 
 function coutdownTime(num) {
-    if (num >= 0 && score > 0) {
+    if (num >= 0 && score > 0 && !isReplayGame) {
         setTimeout(() => {
             // * Display time coutdown
             displayTimeCoutdown(num)
@@ -341,5 +344,10 @@ function gameOver() {
 }
 
 function replayGame() {
-    const boardGame = document.selec
+    isReplayGame = true
+    const boardGame = document.getElementById('board-game')
+    boardGame !== null ? boardGame.remove() : 0
+    const gameControl = document.getElementById('control-game')
+    gameControl.remove()
+    createPokemons()
 }
