@@ -17,12 +17,14 @@ const pokeballImg = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/P
 var pokemonsArr = []
 var selectedPokemonIndex = null
 var isDisabled
-var score = 500
+var score = 100
+// * Senconds
+var timeNum = 10
 
 function createBoardGame() {
     const boardGame = document.createElement('div')
     const BOARDGAME_STYLE = {
-        background: 'radial-gradient(circle,#020024 0,#090979 35%,#00d4ff 100%)',
+        // background: 'radial-gradient(circle,#020024 0,#090979 35%,#00d4ff 100%)',
         position: 'relative',
         margin: '0 auto',
         width: '560px',
@@ -33,6 +35,47 @@ function createBoardGame() {
     document.body.appendChild(boardGame)
 
     return boardGame
+}
+
+function createGameControl() {
+    const gameControl = document.createElement('div')
+    const GAMECONTROL_STYLE = {
+        display: 'flex',
+        flexDirection: 'column'
+    }
+    Object.assign(gameControl.style, GAMECONTROL_STYLE)
+    document.body.appendChild(gameControl)
+
+    return gameControl
+}
+
+function createScore() {
+    const scoreGame = document.createElement('div')
+    scoreGame.id = 'score-game'
+    scoreGame.innerText = `Score: ${score}`
+    const SCOREGAME_STYLE = {
+        color: '#fff',
+        fontSize: '20px'
+
+    }
+    Object.assign(scoreGame.style, SCOREGAME_STYLE)
+    return scoreGame
+}
+
+function createTimeRemaining() {
+    const timeRemaining = document.createElement('div')
+    timeRemaining.id = 'coutdown-time'
+    timeRemaining.innerText = `TimingRemaining: ${timeNum}s`
+    const TIMEREMAINING_STYLE = {
+        color: '#fff',
+        fontSize: '20px'
+    }
+    Object.assign(timeRemaining.style, TIMEREMAINING_STYLE)
+    return timeRemaining
+}
+
+function createBtnReplayGame() {
+
 }
 
 function createBtnPokemon(index) {
@@ -65,6 +108,10 @@ function onPokemonSelect(index) {
         if (selectedPokemonIndex === null) {
             selectedPokemonIndex = index
             // * Open card Pokemon of btn[index]
+
+            // * Disabled btnPokemonSelect
+            const btnPokemonSlect = document.getElementById('pokemon-' + selectedPokemonIndex)
+            btnPokemonSlect.disabled = true
             const cardPokemonSelect = document.getElementById('pokemon-card-' + index)
             cardPokemonSelect.style.transform = 'rotateY(180deg)'
         } else {
@@ -74,35 +121,58 @@ function onPokemonSelect(index) {
 
             // * Pokemon 1 == Pokemon 2
             if (pokemonsArr[selectedPokemonIndex] == pokemonsArr[index]) {
-                const btnPokemonSelect1 = document.getElementById('pokemon-' + selectedPokemonIndex)
-                btnPokemonSelect1.disabled = true
-                const btnPokemonSelect2 = document.getElementById('pokemon-' + index)
-                btnPokemonSelect2.disabled = true
-                selectedPokemonIndex = null
+                setTimeout(() => {
+                    const btnPokemonSelect1 = document.getElementById('pokemon-' + selectedPokemonIndex)
+                    btnPokemonSelect1.remove()
+                    // btnPokemonSelect1.disabled = true
+                    const btnPokemonSelect2 = document.getElementById('pokemon-' + index)
+                    // btnPokemonSelect2.disabled = true
+                    btnPokemonSelect2.remove()
+                    selectedPokemonIndex = null
 
-                score += 100
-                console.log('Matched!', score)
+                    // * ++Score
+                    plusScorePlayer(100)
+                    // score += 100
+                }, 800)
             } else {
 
                 isDisabled = true
                 // * Hidden two pokemons selected not right
                 setTimeout(() => {
+                    const btnPokemonSelect1 = document.getElementById('pokemon-' + selectedPokemonIndex)
+                    btnPokemonSelect1.disabled = false
                     const cardPokemonSelect1 = document.getElementById('pokemon-card-' + selectedPokemonIndex)
                     cardPokemonSelect1.style.transform = 'unset'
                     const cardPokemonSelect2 = document.getElementById('pokemon-card-' + index)
                     cardPokemonSelect2.style.transform = 'unset'
+
                     selectedPokemonIndex = null
                     isDisabled = false
                 }, 700)
 
-                score -= 50
+                // * --Score
+                minusScorePlayer(50)
+                // score -= 50
                 console.log('False', score)
-
-                if (score === 0)
-                console.log('Loser')
+                // console.log(isDisabled)
             }
         }
     }
+}
+
+function plusScorePlayer(bonusScore) {
+    const scoreGame = document.getElementById('score-game')
+    score += bonusScore
+    console.log('Matched!', score)
+    scoreGame.innerText = `Score: ${score}`
+    return score
+}
+
+function minusScorePlayer(penaltyScore) {
+    const scoreGame = document.getElementById('score-game')
+    score -= penaltyScore
+    score === 0 ? scoreGame.innerText = 'Lose game!' : scoreGame.innerText = `Score: ${score}`
+    return score
 }
 
 function createCardPokemon(index) {
@@ -176,11 +246,20 @@ function createPokemons() {
         return Math.random() - 0.5
     })
 
+    // * Create GameControl
+    let gameControl = createGameControl()
+    let score = createScore()
+    let timeRemaining = createTimeRemaining()
+    gameControl.appendChild(score)
+    gameControl.appendChild(timeRemaining)
+
     // * Create boardGame
     let boardGame = createBoardGame()
-    // * Positon btnPokemon
-    let defaultTop = 10, defaultLeft = 10
+    // * Positon default btnPokemon
 
+    // console.log(score)
+
+    let defaultTop = 10, defaultLeft = 10
     for (let i = 0; i < pokemonsArr.length; i++) {
         let btnPokemon = createBtnPokemon(i)
         btnPokemon.style.top = `${defaultTop}px`
@@ -204,11 +283,52 @@ function createPokemons() {
 
         let imgPokemon = createImgPokemon(idmagePokemon)
         cardPokemon.appendChild(imgPokemon)
+        console.log(i, idmagePokemon)
     }
 }
 
 function gameStart() {
     createPokemons()
+
+    // * Hidden btnPlayGame
+    const btnPlayGame = document.getElementById('play-game')
+    btnPlayGame.style.display = 'none'
+
+    // * Coutdowning Time
+    coutdownTime(timeNum)
+}
+
+function coutdownTime(num) {
+    if (num >= 0 && score > 0) {
+        setTimeout(() => {
+            // * Display time coutdown
+            displayTimeCoutdown(num)
+            coutdownTime(num - 1)
+        }, 1000)
+    } else {
+        gameOver()
+    }
+}
+
+function displayTimeCoutdown(num) {
+    let timeTxt = ''
+    if (num <= 0) {
+        timeTxt = '00:00s'
+    }
+    const minutes = Math.floor(num / 60)
+    const seconds = num % 60
+    timeTxt = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0')
+    // console.log(timeTxt)
+    const timeRemaining = document.getElementById('coutdown-time')
+    timeRemaining.innerText = `Timing remaining: ${timeTxt}`
+}
+
+function gameOver() {
+    const scoreGame = document.getElementById('score-game')
+    scoreGame.innerText = 'Game over!'
+    score = 0
+    console.log(score)
+    return score
 }
 
 // gameStart()
