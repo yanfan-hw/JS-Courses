@@ -7,12 +7,12 @@ class Game extends Node {
         this.canClick = true;
         this.firstCard = null;
         this.secondCard = null;
+        this.score = 100;
         this._init();
     }
     _init() {
-        // this._shuffleCards();
         this._createCards();
-        // this._createScore();
+        this._createScore();
     }
     _createCards() {
         this.cards = [];
@@ -30,12 +30,11 @@ class Game extends Node {
             this.addChild(card);
             this.cards.push(card);
         }
-
-        //Shuffle cards
         this.shuffleCards(this.cards)
     }
     _createScore() {
-
+        let scoreSpanText = document.createElement("span");
+        game.appendChild(scoreSpanText)
     }
 
     shuffleCards(array) {
@@ -71,22 +70,26 @@ class Game extends Node {
                 this.firstCard.hide();
                 this.secondCard.hide();
                 console.log(true, "Hide");
-            }, 1000)
+            }, 5000)
         } else {
             setTimeout(() => {
                 this.firstCard.close();
                 this.secondCard.close();
                 console.log(false, "Close");
-            }, 1000)
+            }, 5000)
         }
         setTimeout(() => {
             this.canClick = true;
             this.firstCard = null;
             this.secondCard = null;
-        }, 1000)
+        }, 5000)
     }
     resetGame() {
-
+        this.canClick = true;
+        this.firstCard = null;
+        this.secondCard = null;
+        this.cards = []
+        this.removeChild(game.children)
     }
 }
 
@@ -97,4 +100,7 @@ game.elm.style.position = "relative";
 game.elm.style.margin = "auto";
 
 document.body.appendChild(game.elm);
+
+game.resetGame()
+// console.log(game)
 

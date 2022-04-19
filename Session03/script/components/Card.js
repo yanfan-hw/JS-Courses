@@ -47,14 +47,9 @@ export class Card extends Node {
     }
     open() {
         this.elm.style.transform = "rotateY(180deg)";
-        // this.cover.display = "none";
-        // this.label.display = "none";
     }
     close() {
         this.elm.style.transform = "unset";
-        // this.sprite.display = "none";
-        // this.cover.display = "block";
-        // this.label.display = "block";
     }
     hide() {
         this.cover.display = "none";
