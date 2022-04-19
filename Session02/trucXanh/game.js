@@ -131,6 +131,7 @@ function onPokemonSelect(index) {
 
             // * Pokemon 1 == Pokemon 2
             if (pokemonsArr[selectedPokemonIndex] == pokemonsArr[index]) {
+                isDisabled = true
                 setTimeout(() => {
                     const btnPokemonSelect1 = document.getElementById('pokemon-' + selectedPokemonIndex)
                     btnPokemonSelect1.remove()
@@ -142,6 +143,7 @@ function onPokemonSelect(index) {
 
                     // * ++Score
                     plusScorePlayer(100)
+                    isDisabled = false
                     // score += 100
                 }, 800)
             } else {
