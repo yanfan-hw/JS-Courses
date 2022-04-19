@@ -1,5 +1,4 @@
 import { Node } from "./core/Node.js";
-import { Sprite } from "./core/Sprite.js";
 import { Card } from "./components/Card.js";
 
 class Game extends Node {
@@ -11,6 +10,7 @@ class Game extends Node {
         this._init();
     }
     _init() {
+        // this._shuffleCards();
         this._createCards();
         // this._createScore();
     }
@@ -18,21 +18,33 @@ class Game extends Node {
         this.cards = [];
         for (let index = 0; index < 20; index++) {
             let card = new Card(index);
+            card.elm.style.transition = "transform 0.5s ease-in-out 0s";
+            card.elm.style.transformStyle = "preserve-3d";
             card.width = 100;
             card.height = 100;
             let row = index % 5;
             let col = Math.floor(index / 5);
             card.x = row * 100;
             card.y = col * 100;
-            card.setValue(index % 10);
             card.elm.addEventListener("click", this.onClickCard.bind(this, card));
             this.addChild(card);
             this.cards.push(card);
         }
-        // console.log(this.cards[0])
+
+        //Shuffle cards
+        this.shuffleCards(this.cards)
     }
     _createScore() {
 
+    }
+
+    shuffleCards(array) {
+        // array = array.sort(() => {
+        //     return Math.random() - 0.5
+        // })
+        array.forEach(element => {
+            element.setValue(element.index % 10)
+        });
     }
 
     onClickCard(card) {
@@ -41,11 +53,13 @@ class Game extends Node {
         if (this.firstCard === null) {
             this.firstCard = card;
             // * Open firstCard
+            this.firstCard.open()
             console.log("firstCard", card.value);
         } else {
             this.canClick = false;
             this.secondCard = card;
             // * Open secondCard
+            this.secondCard.open();
             console.log("secondCard", card.value);
             // * CompareCard
             this.compareCard();
@@ -54,16 +68,22 @@ class Game extends Node {
     compareCard() {
         if (this.firstCard.value === this.secondCard.value) {
             setTimeout(() => {
+                this.firstCard.hide();
+                this.secondCard.hide();
                 console.log(true, "Hide");
-            }, 3000)
+            }, 1000)
         } else {
             setTimeout(() => {
+                this.firstCard.close();
+                this.secondCard.close();
                 console.log(false, "Close");
-            }, 3000)
+            }, 1000)
         }
-        this.canClick = true;
-        this.firstCard = null;
-        this.secondCard = null;
+        setTimeout(() => {
+            this.canClick = true;
+            this.firstCard = null;
+            this.secondCard = null;
+        }, 1000)
     }
     resetGame() {
 

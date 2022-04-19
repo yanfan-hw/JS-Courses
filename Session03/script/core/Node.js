@@ -5,17 +5,29 @@ export class Node { // entity
         this._y = 0;
         this._width = 0;
         this._height = 0;
+        this._display = null;
         this.elm = this._createElement();
         this.children = [];
     }
 
-    get x() { return this._x; }
+    get display() {
+        return this.display;
+    }
+    set display(value) {
+        this.elm.style.display = value;
+    }
+
+    get x() {
+        return this._x;
+    }
     set x(value) {
         this._x = value;
         this.elm.style.left = this._x + "px";
     }
 
-    get y() { return this._y; }
+    get y() {
+        return this._y;
+    }
     set y(value) {
         this._y = value;
         this.elm.style.top = this._y + "px";

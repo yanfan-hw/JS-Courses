@@ -23,6 +23,7 @@ export class Card extends Node {
         cover.height = 100;
         cover.elm.style.backgroundColor = "orange";
         cover.elm.style.border = "solid 1px blue";
+        cover.elm.style.backfaceVisibility = "hidden";
         cover.elm.style.cursor = "pointer";
         this.cover = cover;
         this.addChild(this.cover);
@@ -33,6 +34,8 @@ export class Card extends Node {
         label.elm.style.color = "#fff"
         label.elm.style.fontSize = "20px";
         label.elm.style.lineHeight = 1;
+        label.elm.style.cursor = "pointer";
+        label.elm.style.backfaceVisibility = "hidden";
         label.x = 40;
         label.y = 40;
         this.label = label;
@@ -43,13 +46,19 @@ export class Card extends Node {
         this.sprite.path = "./images/trucxanh" + value + ".jpg";
     }
     open() {
-        // this.cover.elm.style.display = "none";
-        // this.label.elm.style.display = "none";
+        this.elm.style.transform = "rotateY(180deg)";
+        // this.cover.display = "none";
+        // this.label.display = "none";
     }
     close() {
-
+        this.elm.style.transform = "unset";
+        // this.sprite.display = "none";
+        // this.cover.display = "block";
+        // this.label.display = "block";
     }
     hide() {
-
+        this.cover.display = "none";
+        this.label.display = "none";
+        this.sprite.display = "none";
     }
 }

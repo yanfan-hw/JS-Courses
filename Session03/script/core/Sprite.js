@@ -15,6 +15,8 @@ export class Sprite extends Node {
     _createElement(){
         let elm = document.createElement("img");
         elm.style.position = "absolute";
+        elm.style.transform = "rotateY(180deg)";
+        elm.style.backfaceVisibility = "hidden";
         return elm;
     }
 }
