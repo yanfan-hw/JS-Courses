@@ -11,7 +11,7 @@ class Game extends Node {
         this.canClick = true;
         this.firstCard = null;
         this.secondCard = null;
-        this.score = 10;
+        this.score = 100;
         this.coutCardFlipped = 0;
         gameSong.play();
         this._createCards();
@@ -171,7 +171,7 @@ class Game extends Node {
     resetGame() {
         const cards = document.body.getElementsByTagName("div")[0];
         cards.innerHTML = "";
-        this.score = 10;
+        // this.score = 10;
         this._init();
     }
     gamePopup() {
