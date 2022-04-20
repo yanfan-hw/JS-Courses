@@ -102,11 +102,18 @@ class Game extends Node {
     }
 
     shuffleCards(array) {
-        // array = array.sort(() => {
-        //     return Math.random() - 0.5
-        // })
-        array.forEach(element => {
-            element.setValue(element.index % 10)
+        let randomArr = [];
+        for(let i = 0; i < 10; i++) {
+            randomArr.push(i);
+            randomArr.push(i);
+        }
+        randomArr = randomArr.sort(() => {
+            return Math.random() - 0.5;
+        });
+        array.forEach((element, index) => {
+            const value = randomArr[index] + 1;
+            console.log(element.index, value)
+            element.setValue(value);
         });
     }
 
