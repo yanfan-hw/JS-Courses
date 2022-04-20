@@ -13,7 +13,6 @@ const pokemonImgs = [
     { id: "poke-8", image: `${BASE_URL}/9.png` },
     { id: "poke-9", image: `${BASE_URL}/10.png` }
 ]
-const pokeballImg = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Pok%C3%A9_Ball_icon.svg/512px-Pok%C3%A9_Ball_icon.png'
 var pokemonsArr = []
 var selectedPokemonIndex = null
 var isDisabled
