@@ -1,6 +1,8 @@
 import { Node } from "../core/Node.js";
 import { Sprite } from "../core/Sprite.js";
 import { Label } from "../core/Label.js";
+const BASE_URL =
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white";
 
 export class Card extends Node {
     constructor(index) {
@@ -21,8 +23,8 @@ export class Card extends Node {
         let cover = new Node();
         cover.width = 100;
         cover.height = 100;
-        cover.elm.style.backgroundColor = "orange";
-        cover.elm.style.border = "solid 1px blue";
+        // cover.elm.style.backgroundColor = "orange";
+        // cover.elm.style.border = "solid 1px blue";
         cover.elm.style.backfaceVisibility = "hidden";
         cover.elm.style.cursor = "pointer";
         this.cover = cover;
@@ -43,7 +45,7 @@ export class Card extends Node {
     }
     setValue(value) {
         this.value = value;
-        this.sprite.path = "./images/trucxanh" + value + ".jpg";
+        this.sprite.path = `${BASE_URL}/${value + 1}.png`
     }
     open() {
         this.elm.style.transform = "rotateY(180deg)";
@@ -52,8 +54,6 @@ export class Card extends Node {
         this.elm.style.transform = "unset";
     }
     hide() {
-        this.cover.display = "none";
-        this.label.display = "none";
-        this.sprite.display = "none";
+        this.elm.style.display = "none";
     }
 }
