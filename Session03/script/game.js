@@ -13,6 +13,7 @@ class Game extends Node {
         this.secondCard = null;
         this.score = 10;
         this.coutCardFlipped = 0;
+        gameSong.play();
         this._createCards();
         this._createScore();
     }
@@ -64,8 +65,12 @@ class Game extends Node {
         this.btnPlayGame.x = 90;
         this.btnPlayGame.y = 150;
         this.btnPlayGame.text = "PLAY GAME";
-        this.btnPlayGame.elm.addEventListener("click", this._init.bind(this));
+        this.btnPlayGame.elm.addEventListener("click", this.playGame.bind(this, this.btnPlayGame));
         this.addChild(this.btnPlayGame);
+    }
+    playGame() {
+        this.btnPlayGame.elm.style.display = "none";
+        this._init();
     }
     _createReplayGameBtn() {
         this.btnReplayGame = new Label();
@@ -103,7 +108,7 @@ class Game extends Node {
 
     shuffleCards(array) {
         let randomArr = [];
-        for(let i = 0; i < 10; i++) {
+        for (let i = 0; i < 10; i++) {
             randomArr.push(i);
             randomArr.push(i);
         }
@@ -121,6 +126,7 @@ class Game extends Node {
         if (!this.canClick) return;
         if (card === this.firstCard) return;
         if (this.firstCard === null) {
+            cardOpen.play();
             this.firstCard = card;
             // * Open firstCard
             this.firstCard.open()
@@ -138,6 +144,7 @@ class Game extends Node {
     compareCard() {
         this.canClick = false;
         if (this.firstCard.value === this.secondCard.value) {
+            matched.play();
             this.coutCardFlipped += 1;
             this.plusScore(10);
             setTimeout(() => {
@@ -146,6 +153,7 @@ class Game extends Node {
                 console.log(true, "Hide");
             }, 500)
         } else {
+            matchFail.play();
             this.minusScore(10);
             setTimeout(() => {
                 this.firstCard.close();
@@ -184,11 +192,13 @@ class Game extends Node {
     }
     gameLose() {
         // this.coutCardFlipped = 0;
+        lose.play()
         const gameLoseText = this.gamePopup();
         gameLoseText.text = "GAME OVER!";
         this._createReplayGameBtn();
     }
     gameWin() {
+        win.play()
         // this.coutCardFlipped = 0;
         const gameWinText = this.gamePopup();
         gameWinText.text = "WIN! YOUR SCORE: " + this.score;
@@ -203,4 +213,10 @@ game.elm.style.position = "relative";
 game.elm.style.margin = "auto";
 
 document.body.appendChild(game.elm);
-
+let gameSong = new Audio("./sounds/game-song.mp3");
+let lose = new Audio("./sounds/gamers-fail-game.mp3");
+let win = new Audio("./sounds/you-win.mp3");
+let matchFail = new Audio("./sounds/match-fail.mp3");
+let matched = new Audio("./sounds/matched-song.mp3");
+let cardOpen = new Audio("./sounds/menu-open.mp3")
+// gameSong.loop = true;
