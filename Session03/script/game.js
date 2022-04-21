@@ -12,7 +12,7 @@ class Game extends Node {
         this.firstCard = null;
         this.secondCard = null;
         this.score = 100;
-        this.coutCardFlipped = 0;
+        this.cardFlipped = 0;
         gameSong.play();
         this._createCards();
         this._createScore();
@@ -22,8 +22,8 @@ class Game extends Node {
         for (let index = 0; index < 20; index++) {
             let card = new Card(index);
             const CARD_STYLE = {
-                transition: 'transform 0.5s ease-in-out 0s',
-                transformStyle: 'preserve-3d',
+                // transition: 'transform 0.5s ease-in-out 0s',
+                // transformStyle: 'preserve-3d',
                 backgroundColor: 'rgb(38, 160, 218)',
                 borderRadius: '5px',
                 border: '2px solid rgb(255, 255, 255)'
@@ -31,15 +31,44 @@ class Game extends Node {
             Object.assign(card.elm.style, CARD_STYLE);
             card.width = 100;
             card.height = 100;
-            let row = index % 5;
-            let col = Math.floor(index / 5);
-            card.x = row * 100;
-            card.y = col * 100;
+            // let row = index % 5;
+            // let col = Math.floor(index / 5);
+            card.x = (505 - 100) / 2;
+            card.y = (400 - 100) / 2;
             card.elm.addEventListener("click", this.onClickCard.bind(this, card));
             this.addChild(card);
             this.cards.push(card);
         }
+        // console.log(this.cards);
+        // const tl = gsap.timeline();
+        // for (let i = 19; i >= 0; i++) {
+        //     tl.fromTo(this.cards[i], 0.2, { alpha: 0 }, { ease: Back.easeOut.config(6), alpha: 1});
+        //     if (i == 0) {
+        //         tl.fromTo(this.cards[i], 1, { alpha: 0 }, {
+        //             ease: Back.easeOut.config(6),
+        //             alpha: 1,
+        //             onComplete: this.move()
+        //         });
+        //     }
+        // }
+        // tl.delay = 1;
+
+        // tl.play();
+        this.move();
         this.shuffleCards(this.cards)
+    }
+    move() {
+        const tl = gsap.timeline();
+        for (let i = 0; i < 20; i++) {
+            let row = i % 5;
+            let col = Math.floor(i / 5);
+            tl.to(this.cards[i], 0.3, {
+                ease: Back.easeOut.config(6),
+                x: row * 110,
+                y: col * 110,
+                // delay: i * 0.1
+            })
+        };
     }
     _createScore() {
         this.scoreText = new Label();
@@ -54,7 +83,7 @@ class Game extends Node {
             backgroundColor: "#fff"
         };
         this.scoreText.style = STYLE_SCORETEXT;
-        this.scoreText.y = 420;
+        this.scoreText.y = 440;
         this.scoreText.text = "Score: " + this.score;
 
         this.addChild(this.scoreText);
@@ -98,7 +127,7 @@ class Game extends Node {
     plusScore(bonusScore) {
         this.animationScore(this.score, this.score + bonusScore);
         this.score = this.score + bonusScore;
-        if (this.coutCardFlipped === 10) this.gameWin();
+        if (this.cardFlipped === 10) this.gameWin();
     }
     minusScore(penaltyScore) {
         this.animationScore(this.score, this.score - penaltyScore);
@@ -117,7 +146,7 @@ class Game extends Node {
         });
         array.forEach((element, index) => {
             const value = randomArr[index] + 1;
-            console.log(element.index, value)
+            console.log(element.index + 1, value)
             element.setValue(value);
         });
     }
@@ -145,7 +174,7 @@ class Game extends Node {
         this.canClick = false;
         if (this.firstCard.value === this.secondCard.value) {
             matched.play();
-            this.coutCardFlipped += 1;
+            this.cardFlipped += 1;
             this.plusScore(10);
             setTimeout(() => {
                 this.firstCard.hide();
@@ -171,7 +200,6 @@ class Game extends Node {
     resetGame() {
         const cards = document.body.getElementsByTagName("div")[0];
         cards.innerHTML = "";
-        // this.score = 10;
         this._init();
     }
     gamePopup() {
@@ -191,15 +219,13 @@ class Game extends Node {
         return this.textPopup
     }
     gameLose() {
-        // this.coutCardFlipped = 0;
         lose.play()
         const gameLoseText = this.gamePopup();
         gameLoseText.text = "GAME OVER!";
         this._createReplayGameBtn();
     }
     gameWin() {
-        win.play()
-        // this.coutCardFlipped = 0;
+        win.play();
         const gameWinText = this.gamePopup();
         gameWinText.text = "WIN! YOUR SCORE: " + this.score;
         this._createReplayGameBtn();
@@ -207,8 +233,8 @@ class Game extends Node {
 }
 
 let game = new Game();
-game.width = 505;
-game.height = 470;
+game.width = 540;
+game.height = 480;
 game.elm.style.position = "relative";
 game.elm.style.margin = "auto";
 
