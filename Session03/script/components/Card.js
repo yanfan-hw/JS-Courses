@@ -70,6 +70,7 @@ export class Card extends Node {
     }
     hide() {
         const tl = gsap.timeline();
-        tl.to(this.elm)
+        tl.to(this.elm, { zIndex: 1, scale: 1.5, duration: 0.3, delay: 1});
+        tl.to(this.elm, { zIndex: 1, scale: 0, duration: 0.3});
     }
 }
